@@ -14,12 +14,12 @@ initial_version=${INITIAL_VERSION:-0.0.0}
 tag_context=${TAG_CONTEXT:-repo}
 # prerelease=${PRERELEASE:-false}
 # suffix=${PRERELEASE_SUFFIX:-beta}
-verbose=${VERBOSE:-false}
+# verbose=${VERBOSE:-false}
 major_string_token=${MAJOR_STRING_TOKEN:-#major}
 minor_string_token=${MINOR_STRING_TOKEN:-#minor}
 patch_string_token=${PATCH_STRING_TOKEN:-#patch}
 none_string_token=${NONE_STRING_TOKEN:-#none}
-branch_history=${BRANCH_HISTORY:-compare}
+branch_history=compare
 
 git config --global --add safe.directory /github/workspace
 
@@ -27,7 +27,7 @@ cd "${GITHUB_WORKSPACE}/${source}" || exit 1
 
 echo "*** CONFIGURATION ***"
 echo -e "\tDEFAULT_BUMP: ${default_semvar_bump}"
-# echo -e "\tDEFAULT_BRANCH: ${default_branch}"
+echo -e "\tDEFAULT_BRANCH: ${default_branch}"
 echo -e "\tWITH_V: ${with_v}"
 # echo -e "\tRELEASE_BRANCHES: ${release_branches}"
 # echo -e "\tCUSTOM_TAG: ${custom_tag}"
@@ -37,22 +37,22 @@ echo -e "\tINITIAL_VERSION: ${initial_version}"
 echo -e "\tTAG_CONTEXT: ${tag_context}"
 # echo -e "\tPRERELEASE: ${prerelease}"
 # echo -e "\tPRERELEASE_SUFFIX: ${suffix}"
-echo -e "\tVERBOSE: ${verbose}"
+# echo -e "\tVERBOSE: ${verbose}"
 echo -e "\tMAJOR_STRING_TOKEN: ${major_string_token}"
 echo -e "\tMINOR_STRING_TOKEN: ${minor_string_token}"
 echo -e "\tPATCH_STRING_TOKEN: ${patch_string_token}"
 echo -e "\tNONE_STRING_TOKEN: ${none_string_token}"
 echo -e "\tBRANCH_HISTORY: ${branch_history}"
 
-# verbose, show everything
-if $verbose
-then
-    set -x
-fi
+# # verbose, show everything
+# if $verbose
+# then
+#     set -x
+# fi
 
-setOutput() {
-    echo "${1}=${2}" >> "${GITHUB_OUTPUT}"
-}
+# setOutput() {
+#     echo "${1}=${2}" >> "${GITHUB_OUTPUT}"
+# }
 
 current_branch=$(git rev-parse --abbrev-ref HEAD)
 
