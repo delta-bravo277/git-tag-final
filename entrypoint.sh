@@ -135,31 +135,31 @@ git tag "$new"
 
 # push new tag ref to github
 repo_name=$GITHUB_REPOSITORY
-# git_refs_url=$(jq .repository.git_refs_url "$GITHUB_EVENT_PATH" | tr -d '"' | sed 's/{\/sha}//g')
+git_refs_url=$(jq .repository.git_refs_url "$GITHUB_EVENT_PATH" | tr -d '"' | sed 's/{\/sha}//g')
 
 echo "*** pushing tag $new to repo $repo_name ***"
 
-git_tag_ref=$(git show-ref --tags | cut -d ' ' -f 2- | sort -r | head -n 1)
+# git_tag_ref=$(git show-ref --tags | cut -d ' ' -f 2- | sort -r | head -n 1)
 
 
-# git_refs_response=$(
-# curl -s -X POST "$git_refs_url" \
-# -H "Authorization: token $GITHUB_TOKEN" \
-# -d @- << EOF
+git_refs_response=$(
+curl -s -X POST "$git_refs_url" \
+-H "Authorization: token $GITHUB_TOKEN" \
+-d @- << EOF
 
-# {
-#   "ref": "refs/tags/$new",
-#   "sha": "$commit"
-# }
-# EOF
-# )
+{
+  "ref": "refs/tags/$new",
+  "sha": "$commit"
+}
+EOF
+)
 
-# git_ref_posted=$( echo "${git_refs_response}" | jq .ref | tr -d '"' )
+git_ref_posted=$( echo "${git_refs_response}" | jq .ref | tr -d '"' )
 
-# echo "::debug::${git_refs_response}"
+echo "::debug::${git_refs_response}"
 
-# if [ "${git_ref_posted}" = "refs/tags/${new}" ]
-if [ "${git_tag_ref}" = "refs/tags/${new}" ]
+if [ "${git_ref_posted}" = "refs/tags/${new}" ]
+# if [ "${git_tag_ref}" = "refs/tags/${new}" ]
 then
     exit 0
 else
