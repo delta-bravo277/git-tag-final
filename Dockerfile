@@ -3,7 +3,7 @@ FROM node:16-alpine
 # LABEL "homepage"="https://github.com/sanketl-talentica/github-actions-tag"
 # LABEL "maintainer"="Custom Github Action"
 
-RUN apt-get --no-cache add bash git curl jq && npm install -g semver
+RUN apk add bash git curl jq && npm install -g semver
 
 COPY entrypoint.sh /entrypoint.sh
 
