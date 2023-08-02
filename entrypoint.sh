@@ -50,9 +50,9 @@ echo -e "\tBRANCH_HISTORY: ${branch_history}"
 #     set -x
 # fi
 
-# setOutput() {
-#     echo "${1}=${2}" >> "${GITHUB_OUTPUT}"
-# }
+setOutput() {
+    echo "${1}=${2}" >> "${GITHUB_OUTPUT}"
+}
 
 current_branch=$(git rev-parse --abbrev-ref HEAD)
 
