@@ -3,13 +3,13 @@
 set -o pipefail
 
 # config
-default_semvar_bump=${DEFAULT_BUMP:-minor}
-default_branch=${DEFAULT_BRANCH:-$GITHUB_BASE_REF} # get the default branch from github runner env vars
+default_semvar_bump=${DEFAULT_BUMP:-none}
+default_branch=main # get the default branch from github runner env vars
 with_v=${WITH_V:-false}
 # release_branches=${RELEASE_BRANCHES:-master,main}
 # custom_tag=${CUSTOM_TAG:-}
 source=${SOURCE:-.}
-dryrun=${DRY_RUN:-false}
+# dryrun=${DRY_RUN:-false}
 initial_version=${INITIAL_VERSION:-0.0.0}
 tag_context=${TAG_CONTEXT:-repo}
 # prerelease=${PRERELEASE:-false}
@@ -27,12 +27,12 @@ cd "${GITHUB_WORKSPACE}/${source}" || exit 1
 
 echo "*** CONFIGURATION ***"
 echo -e "\tDEFAULT_BUMP: ${default_semvar_bump}"
-echo -e "\tDEFAULT_BRANCH: ${default_branch}"
+# echo -e "\tDEFAULT_BRANCH: ${default_branch}"
 echo -e "\tWITH_V: ${with_v}"
 # echo -e "\tRELEASE_BRANCHES: ${release_branches}"
 # echo -e "\tCUSTOM_TAG: ${custom_tag}"
-echo -e "\tSOURCE: ${source}"
-echo -e "\tDRY_RUN: ${dryrun}"
+# echo -e "\tSOURCE: ${source}"
+# echo -e "\tDRY_RUN: ${dryrun}"
 echo -e "\tINITIAL_VERSION: ${initial_version}"
 echo -e "\tTAG_CONTEXT: ${tag_context}"
 # echo -e "\tPRERELEASE: ${prerelease}"
@@ -126,19 +126,19 @@ then
     exit 0
 fi
 
-# sanitize that the default_branch is set (via env var when running on PRs) else find it natively
-if [ -z "${default_branch}" ] && [ "$branch_history" == "full" ]
-then
-    echo "The DEFAULT_BRANCH should be autodetected when tag-action runs on on PRs else must be defined."
-    default_branch=$(git branch -rl '*/master' '*/main' | cut -d / -f2)
-    echo "default_branch=${default_branch}"
-    # re check this
-    if [ -z "${default_branch}" ]
-    then
-        echo "::error::DEFAULT_BRANCH must not be null, something has gone wrong."
-        exit 1
-    fi
-fi
+# # sanitize that the default_branch is set (via env var when running on PRs) else find it natively
+# if [ -z "${default_branch}" ] && [ "$branch_history" == "full" ]
+# then
+#     echo "The DEFAULT_BRANCH should be autodetected when tag-action runs on on PRs else must be defined."
+#     default_branch=$(git branch -rl '*/master' '*/main' | cut -d / -f2)
+#     echo "default_branch=${default_branch}"
+#     # re check this
+#     if [ -z "${default_branch}" ]
+#     then
+#         echo "::error::DEFAULT_BRANCH must not be null, something has gone wrong."
+#         exit 1
+#     fi
+# fi
 
 # get the merge commit message looking for #bumps
 declare -A history_type=( 
