@@ -54,8 +54,8 @@ setOutput() {
     echo "${1}=${2}" >> "${GITHUB_OUTPUT}"
 }
 
-current_branch=$(git rev-parse --abbrev-ref HEAD)
 
+# current_branch=$(git rev-parse --abbrev-ref HEAD)
 # pre_release="$prerelease"
 # IFS=',' read -ra branch <<< "$release_branches"
 # for b in "${branch[@]}"; do
@@ -75,18 +75,18 @@ current_branch=$(git rev-parse --abbrev-ref HEAD)
 # fetch tags
 git fetch --tags
 
-tagFmt="^v?[0-9]+\.[0-9]+\.[0-9]+$"
-preTagFmt="^v?[0-9]+\.[0-9]+\.[0-9]+(-$suffix\.[0-9]+)$"
+tagFormat="^v?[0-9]+\.[0-9]+\.[0-9]+$"
+# preTagFmt="^v?[0-9]+\.[0-9]+\.[0-9]+(-$suffix\.[0-9]+)$"
 
 # get latest tag that looks like a semver (with or without v)
 case "$tag_context" in
     *repo*) 
-        tag="$(git for-each-ref --sort=-v:refname --format '%(refname:lstrip=2)' | grep -E "$tagFmt" | head -n 1)"
-        pre_tag="$(git for-each-ref --sort=-v:refname --format '%(refname:lstrip=2)' | grep -E "$preTagFmt" | head -n 1)"
+        tag="$(git for-each-ref --sort=-v:refname --format '%(refname:lstrip=2)' | grep -E "$tagFormat" | head -n 1)"
+        # pre_tag="$(git for-each-ref --sort=-v:refname --format '%(refname:lstrip=2)' | grep -E "$preTagFmt" | head -n 1)"
         ;;
     *branch*) 
-        tag="$(git tag --list --merged HEAD --sort=-v:refname | grep -E "$tagFmt" | head -n 1)"
-        pre_tag="$(git tag --list --merged HEAD --sort=-v:refname | grep -E "$preTagFmt" | head -n 1)"
+        tag="$(git tag --list --merged HEAD --sort=-v:refname | grep -E "$tagFormat" | head -n 1)"
+        # pre_tag="$(git tag --list --merged HEAD --sort=-v:refname | grep -E "$preTagFmt" | head -n 1)"
         ;;
     * ) echo "Unrecognised context"
         exit 1;;
@@ -102,15 +102,15 @@ then
         tag="$initial_version"
     fi
     # if [ -z "$pre_tag" ] && $pre_release
-    if [ -z "$pre_tag" ]
-    then
-        if $with_v
-        then
-            pre_tag="v$initial_version"
-        else
-            pre_tag="$initial_version"
-        fi
-    fi
+    # if [ -z "$pre_tag" ]
+    # then
+    #     if $with_v
+    #     then
+    #         pre_tag="v$initial_version"
+    #     else
+    #         pre_tag="$initial_version"
+    #     fi
+    # fi
 fi
 
 # get current commit hash for tag
