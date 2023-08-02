@@ -228,11 +228,11 @@ setOutput "part" "$part"
 setOutput "tag" "$new" # this needs to go in v2 is breaking change
 setOutput "old_tag" "$tag"
 
-# dry run exit without real changes
-if $dryrun
-then
-    exit 0
-fi
+# # dry run exit without real changes
+# if $dryrun
+# then
+#     exit 0
+# fi
 
 # create local git tag
 git tag "$new"
